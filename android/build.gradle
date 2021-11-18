@@ -3,6 +3,15 @@ def safeExtGet(prop, fallback) {
 }
 
 apply plugin: 'com.android.library'
+buildscript {
+    repositories {
+        mavenCentral()
+        google() // or jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.0'   //last version Jan 2016
+    }
+}
 
 android {
     compileSdkVersion safeExtGet('compileSdkVersion', 23)

@@ -28,7 +28,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import java.lang.Boolean;
 
-public class RSSignatureCaptureMainView extends LinearLayout implements OnClickListener,RSSignatureCaptureView.SignatureCallback {
+public class RSSignatureCaptureMainView extends LinearLayout implements OnClickListener,RSSignatureCaptureView.SignatureCallback, RSSignatureCaptureView.OnSignedListener {
   LinearLayout buttonsLayout;
   RSSignatureCaptureView signatureView;
 
@@ -49,6 +49,7 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
 
     this.setOrientation(LinearLayout.VERTICAL);
     this.signatureView = new RSSignatureCaptureView(context,this);
+    this.signatureView.setmOnSignedListener(this);
     // add the buttons and signature views
     this.buttonsLayout = this.buttonsLayout();
     this.addView(this.buttonsLayout);
@@ -137,6 +138,8 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
    * save the signature to an sd card directory
    */
   final void saveImage() {
+    if (!this.isSigned)
+      return;
     // the directory where the signature will be saved
     File myDir = getContext().getExternalFilesDir("/saved_signature");
 
@@ -214,5 +217,17 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
     ReactContext reactContext = (ReactContext) getContext();
     reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "topChange", event);
 
+  }
+
+  private boolean isSigned = false;
+
+  @Override
+  public void onSigned() {
+    this.isSigned = true;
+  }
+
+  @Override
+  public void onClear() {
+    this.isSigned = false;
   }
 }

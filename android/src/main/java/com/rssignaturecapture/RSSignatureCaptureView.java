@@ -374,6 +374,10 @@ public class RSSignatureCaptureView extends View {
 		return Math.round(dp*(getResources().getDisplayMetrics().xdpi/ DisplayMetrics.DENSITY_DEFAULT));
 	}
 
+	public void setmOnSignedListener(OnSignedListener mOnSignedListener) {
+		this.mOnSignedListener = mOnSignedListener;
+	}
+
 	public interface OnSignedListener {
 		public void onSigned();
 
